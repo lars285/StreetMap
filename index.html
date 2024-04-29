@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Straßenschäden</title>
+      <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+   </head>
+<body>
+   <div id = "map" style = "width: 100%; height: 100vh"></div>
+<script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<style>
+   body{
+      margin: 0px;
+   }
+   :root{
+      margin: 0px;
+   }
+   .legend-image{
+      width: 13px;
+      margin-right: 5px;
+   }
+   .legend-text{
+      margin-left: 5px;
+   }
+   .info.legend{
+      border: 3px solid  rgba(143, 140, 140,0.1); 
+      background: rgba(191, 189, 189,0.7);
+   }
+   .legend-item{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0.2rem;
+   }
+   .legend-title {
+      margin-bottom: 0px;
+      margin-top: 1px;
+   }
+</style>
+<script>
+
+   var mapOptions = {
+      center: [49.87283,8.65138],
+      zoom: 14
+   }
+   
+   async function fetchDataAndAddMarkers() {
+      try {
+         const response = await fetch('/points');
+         const data = await response.json();
+         let i = 0;
+         while (i < data.length) {
+            const lat = data[i].lat;
+            const long = data[i].long;
+            const imageName = data[i].imageName;
+            const damage = data[i].damage;
+            let customIcon = {
+            iconUrl:"marker/" + damage,
+            iconSize:[26,42]
+            }
+            let myIcon = L.icon(customIcon);
+            let iconOptions = {
+            title:"",
+            draggable:false,
+            icon:myIcon
+            }
+            let marker = new L.Marker([lat, long], iconOptions);
+            marker.bindPopup("<style> .center-text { text-align: center; } </style><div class=center-text><b>This is the Image at LatLng(" + lat + "," + long + ")</b1><img src='/image/" + imageName + "'>", {maxWidth: "auto"}).openPopup();
+            marker.addTo(map);
+            i++;
+         }
+         var legend = L.control({position: 'bottomleft'});
+         legend.onAdd = function (map) {
+
+         var div = L.DomUtil.create('div', 'info legend');
+         labels = ['<p class="legend-title"><strong style=" margin-left:5px;">Kategorien</strong>'],
+         categories = ['<span class="legend-text">Vertikaler Riss</span>', '<span class="legend-text">Horizontaler Riss</span>', '<span class="legend-text">Rissmuster</span>', '<span class="legend-text">Schlaglöcher</span>'];
+         categoriesNumber = ['D00','D10','D20','D40'];
+
+         for (var i = 0; i < categories.length; i++) {
+
+               div.innerHTML += 
+               labels.push(
+                     '<div class="legend-item"><img src="/marker/'+ categoriesNumber[i] + '" class="legend-image">' + (categories[i] ? categories[i] : 'NoImage') +  '</div>');
+   
+            }
+            div.innerHTML = labels.join('');
+         return div;
+         };
+         legend.addTo(map);
+         
+      } catch (error) {
+            console.error('Fehler beim Laden der Punkte:', error);
+      }
+   }  
+   fetchDataAndAddMarkers();
+
+   var map = new L.map('map', mapOptions);
+   
+   var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+   
+   map.addLayer(layer);
+</script>
+</body>
+</html>
