@@ -2,16 +2,23 @@ import psycopg2
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
+import os
 
 
 app = FastAPI()
 
+database = os.getenv('PG_DB', 'test')
+user = os.getenv('PG_USER', 'test')
+host = os.getenv('PG_HOST', 'localhost')
+password = os.getenv('PG_PASSWORD', 'test')
+port = os.getenv('PG_PORT', 5432)
+
 def connectDatabase():
-    conn = psycopg2.connect(database = "street", 
-                        user = "test", 
-                        host= 'localhost',
-                        password = "test",
-                        port = 5432)
+    conn = psycopg2.connect(database = database, 
+                        user = user, 
+                        host= host,
+                        password = password,
+                        port = port)
     return conn
     
 class Item(BaseModel):
