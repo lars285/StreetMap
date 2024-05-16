@@ -7,6 +7,7 @@ import os
 
 app = FastAPI()
 
+
 database = os.getenv('PG_DB', 'test')
 user = os.getenv('PG_USER', 'test')
 host = os.getenv('PG_HOST', 'localhost')
@@ -21,6 +22,28 @@ def connectDatabase():
                         port = port)
     return conn
     
+conn = connectDatabase()
+cur = conn.cursor()
+cur.execute("""DO $$
+            BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname  = 'damage') THEN
+            CREATE TYPE damage AS ENUM ('D00', 'D10', 'D20', 'D40');
+            END IF;
+            END$$;""")
+
+cur.execute("""CREATE TABLE IF NOT EXISTS OpenStreetMap(
+            id SERIAL PRIMARY KEY,
+            lat VARCHAR (50)  NOT NULL,
+            long VARCHAR (50) NOT NULL,
+            imageName VARCHAR (60) NOT NULL,
+            damage damage NOT NULL
+            );
+            """)
+
+conn.commit()
+cur.close()
+conn.close()
+
 class Item(BaseModel):
     lat: float
     long: float
