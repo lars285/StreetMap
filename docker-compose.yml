@@ -2,7 +2,9 @@ version: '3.9'
 
 services:
   streetmap:
+    container_name: streetmap
     build: .
+    restart: unless-stopped
     ports: 
       - "8000:8000"
     environment:
