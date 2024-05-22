@@ -4,8 +4,8 @@ from pydantic import BaseModel
 from fastapi.responses import FileResponse
 import os
 
-docs_url = os.getenv('DOCS', '/docs')
-redoc_url = os.getenv('REDOC', '/redoc')
+docs_url = os.getenv('DOCS', None)
+redoc_url = os.getenv('REDOC', None)
 
 app = FastAPI(docs_url=docs_url, redoc_url=redoc_url)
 

@@ -9,8 +9,8 @@ The Map looks like this:
 
 | Var         | Default   | Required | Description                  |
 | ----------- | --------- | -------- | ---------------------------- |
-| DOCS        | /docs     | No       | FastAPI Documentation        |
-| REDOC       | /redoc    | No       | FastAPI Documentation        |
+| DOCS        | None      | No       | FastAPI Documentation        |
+| REDOC       | None      | No       | FastAPI Documentation        |
 | PG_DB       | test      | No       | PostgreSQL database Name     |
 | PG_USER     | test      | No       | PostgreSQL database user     |
 | PG_HOST     | localhost | No       | PostgreSQL database host     |
