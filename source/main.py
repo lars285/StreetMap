@@ -4,8 +4,10 @@ from pydantic import BaseModel
 from fastapi.responses import FileResponse
 import os
 
+docs_url = os.getenv('DOCS', '/docs')
+redoc_url = os.getenv('REDOC', '/redoc')
 
-app = FastAPI()
+app = FastAPI(docs_url=docs_url, redoc_url=redoc_url)
 
 
 database = os.getenv('PG_DB', 'test')

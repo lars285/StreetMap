@@ -7,11 +7,8 @@ services:
     restart: unless-stopped
     ports: 
       - "8000:8000"
-    environment:
-      - PG_DB=${PG_DB}
-      - PG_USER=${PG_USER}
-      - PG_HOST=${PG_HOST}
-      - PG_PASSWORD=${PG_PASSWORD}
+    env_file:
+      - .env
 
   postgres:
     container_name: postgres
