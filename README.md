@@ -16,3 +16,13 @@ The Map looks like this:
 | PG_HOST     | localhost | No       | PostgreSQL database host     |
 | PG_PASSWORD | test      | No       | PostgreSQL database password |
 | PG_PORT     | 5432      | No       | PostgreSQL database port     |
+
+# Hardware
+- D1 mini Lite ESP8266
+- Button
+- GPS-Modul GY-NEO6MV2
+
+For my project, I used a D1 mini Lite ESP8266. While you don't have to use this exact microcontroller, my code is compatible with it. The same applies to the GPS module; I used the GY-NEO6MV2.
+
+## Wiring diagram
+![alt text](/README/schaltplan.png?raw=true)
